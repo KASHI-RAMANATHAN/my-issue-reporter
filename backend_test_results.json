@@ -1,0 +1,68 @@
+{
+  "timestamp": "2025-12-22T16:51:46.004711",
+  "total_tests": 12,
+  "passed_tests": 12,
+  "success_rate": 1.0,
+  "results": [
+    {
+      "test": "API Root",
+      "success": true,
+      "details": "Status: 200, Response: {\n  \"message\": \"Smart Campus Issue Reporter API\"\n}..."
+    },
+    {
+      "test": "Create Status Check",
+      "success": true,
+      "details": "Status: 200, Response: {\n  \"id\": \"9a64cb87-404c-45ca-9771-f9496aaddac5\",\n  \"client_name\": \"test_client\",\n  \"timestamp\": \"2025-12-22T16:51:30.826386Z\"\n}..."
+    },
+    {
+      "test": "Get Status Checks",
+      "success": true,
+      "details": "Status: 200, Response: [\n  {\n    \"id\": \"9a64cb87-404c-45ca-9771-f9496aaddac5\",\n    \"client_name\": \"test_client\",\n    \"timestamp\": \"2025-12-22T16:51:30.826386Z\"\n  }\n]..."
+    },
+    {
+      "test": "Analyze Issue (Text Only)",
+      "success": true,
+      "details": "Status: 200, Response: {\n  \"category\": \"Electrical\",\n  \"priority\": \"Medium\"\n}..."
+    },
+    {
+      "test": "Analyze Issue (With Image)",
+      "success": true,
+      "details": "Status: 200, Response: {\n  \"category\": \"Maintenance\",\n  \"priority\": \"High\"\n}..."
+    },
+    {
+      "test": "Get Issues (Initial)",
+      "success": true,
+      "details": "Status: 200, Response: []..."
+    },
+    {
+      "test": "Create Issue (No Image)",
+      "success": true,
+      "details": "Status: 200, Response: {\n  \"id\": \"8e5f8555-754e-43b9-972a-99eed7f654e2\",\n  \"building\": \"Science Building\",\n  \"description\": \"Air conditioning not working in room 101\",\n  \"image_url\": null,\n  \"category\": \"Electrical\",\n  \"pri..."
+    },
+    {
+      "test": "Create Issue (With Image)",
+      "success": true,
+      "details": "Status: 200, Response: {\n  \"id\": \"60ef0d78-8be9-48b7-8922-4cc855ae80f4\",\n  \"building\": \"Main Library\",\n  \"description\": \"Broken chair in study area\",\n  \"image_url\": null,\n  \"category\": \"Maintenance\",\n  \"priority\": \"Medium\",..."
+    },
+    {
+      "test": "Get Issues (After Creation)",
+      "success": true,
+      "details": "Status: 200, Response: [\n  {\n    \"id\": \"8e5f8555-754e-43b9-972a-99eed7f654e2\",\n    \"building\": \"Science Building\",\n    \"description\": \"Air conditioning not working in room 101\",\n    \"image_url\": null,\n    \"category\": \"Elect..."
+    },
+    {
+      "test": "Update Issue Status",
+      "success": true,
+      "details": "Status: 200, Response: {\n  \"id\": \"8e5f8555-754e-43b9-972a-99eed7f654e2\",\n  \"building\": \"Science Building\",\n  \"description\": \"Air conditioning not working in room 101\",\n  \"image_url\": null,\n  \"category\": \"Electrical\",\n  \"pri..."
+    },
+    {
+      "test": "Delete Issue",
+      "success": true,
+      "details": "Status: 200, Response: {\n  \"message\": \"Issue deleted\"\n}..."
+    },
+    {
+      "test": "Get Admin Stats",
+      "success": true,
+      "details": "Status: 200, Response: {\n  \"total_issues\": 1,\n  \"open_issues\": 0,\n  \"in_progress\": 1,\n  \"resolved\": 0,\n  \"system_status\": \"Operational\",\n  \"recent_logs\": [\n    {\n      \"id\": \"8e5f8555-754e-43b9-972a-99eed7f654e2\",\n      \"bu..."
+    }
+  ]
+}

@@ -1,0 +1,135 @@
+{
+  "identity": {
+    "persona": "E1: The Anti-AI Designer",
+    "mission": "Create a 'Smart Campus' utility that feels like a high-end productivity tool, not a government form.",
+    "principles": [
+      "Fusion: Swiss Clarity x Organic Campus Life",
+      "Emotion: Efficiency = Trust",
+      "Content: Data is beautiful, Status is story",
+      "Contrast: High-vis status indicators against clean backgrounds"
+    ]
+  },
+  "typography": {
+    "font_family": {
+      "headings": "Manrope, sans-serif",
+      "body": "Inter, sans-serif",
+      "mono": "JetBrains Mono, monospace"
+    },
+    "weights": {
+      "headings": "font-bold tracking-tight",
+      "subheadings": "font-medium tracking-normal",
+      "body": "font-normal"
+    },
+    "sizes": {
+      "h1": "text-4xl md:text-5xl lg:text-6xl",
+      "h2": "text-3xl md:text-4xl",
+      "h3": "text-2xl",
+      "body": "text-base",
+      "small": "text-sm",
+      "tiny": "text-xs uppercase tracking-wider"
+    }
+  },
+  "colors": {
+    "palette_name": "Smart Campus Indigo",
+    "light_mode": {
+      "background": "bg-slate-50",
+      "foreground": "text-slate-900",
+      "card": "bg-white",
+      "border": "border-slate-200",
+      "primary": "bg-indigo-600 hover:bg-indigo-700 text-white",
+      "secondary": "bg-slate-100 hover:bg-slate-200 text-slate-900",
+      "accent": "bg-teal-500 text-white",
+      "muted": "text-slate-500"
+    },
+    "dark_mode": {
+      "background": "dark:bg-slate-950",
+      "foreground": "dark:text-slate-50",
+      "card": "dark:bg-slate-900",
+      "border": "dark:border-slate-800",
+      "primary": "dark:bg-indigo-500 dark:hover:bg-indigo-600 dark:text-white",
+      "secondary": "dark:bg-slate-800 dark:hover:bg-slate-700 dark:text-slate-50",
+      "accent": "dark:bg-teal-400 dark:text-slate-900",
+      "muted": "dark:text-slate-400"
+    },
+    "status": {
+      "open": "text-amber-600 bg-amber-50 dark:text-amber-400 dark:bg-amber-950/30 border-amber-200 dark:border-amber-800",
+      "in_progress": "text-blue-600 bg-blue-50 dark:text-blue-400 dark:bg-blue-950/30 border-blue-200 dark:border-blue-800",
+      "resolved": "text-emerald-600 bg-emerald-50 dark:text-emerald-400 dark:bg-emerald-950/30 border-emerald-200 dark:border-emerald-800",
+      "critical": "text-rose-600 bg-rose-50 dark:text-rose-400 dark:bg-rose-950/30 border-rose-200 dark:border-rose-800"
+    }
+  },
+  "visual_enhancers": {
+    "glassmorphism": "backdrop-blur-xl bg-white/70 dark:bg-slate-900/70 border border-white/20 shadow-sm",
+    "shadows": {
+      "card": "shadow-[0_2px_8px_rgba(0,0,0,0.04)] dark:shadow-none",
+      "floating": "shadow-[0_8px_30px_rgba(0,0,0,0.12)] dark:shadow-[0_8px_30px_rgba(0,0,0,0.4)]"
+    },
+    "borders": "border border-border",
+    "radius": "rounded-xl"
+  },
+  "layout_strategies": {
+    "login_page": {
+      "structure": "grid grid-cols-1 lg:grid-cols-2 h-screen w-full overflow-hidden",
+      "left_panel": "flex flex-col justify-center px-8 md:px-16 lg:px-24 bg-background relative z-10",
+      "right_panel": "hidden lg:block relative bg-slate-900",
+      "image_overlay": "absolute inset-0 bg-indigo-900/20 mix-blend-multiply"
+    },
+    "dashboard": {
+      "structure": "min-h-screen bg-background pb-20 md:pb-0",
+      "grid": "max-w-7xl mx-auto p-4 md:p-8 grid grid-cols-1 md:grid-cols-12 gap-6",
+      "sidebar": "hidden md:flex md:col-span-3 lg:col-span-2 flex-col gap-2 sticky top-8 h-[calc(100vh-4rem)]",
+      "main_content": "col-span-1 md:col-span-9 lg:col-span-10 flex flex-col gap-8"
+    },
+    "bento_grid": {
+      "wrapper": "grid grid-cols-1 md:grid-cols-3 gap-4",
+      "hero_card": "md:col-span-2 bg-gradient-to-br from-indigo-500 to-purple-600 text-white",
+      "stat_card": "bg-card border border-border p-6 flex flex-col justify-between"
+    }
+  },
+  "components": {
+    "buttons": {
+      "primary": "h-11 px-8 rounded-full font-medium transition-all active:scale-95 shadow-lg shadow-indigo-500/20",
+      "secondary": "h-11 px-6 rounded-full font-medium border border-border hover:bg-accent hover:text-accent-foreground transition-all",
+      "ghost": "hover:bg-accent hover:text-accent-foreground rounded-lg"
+    },
+    "inputs": {
+      "default": "h-12 bg-background border-input focus-visible:ring-2 focus-visible:ring-indigo-500 rounded-lg transition-all"
+    },
+    "cards": {
+      "default": "bg-card text-card-foreground rounded-xl border border-border shadow-sm overflow-hidden",
+      "interactive": "hover:border-indigo-500/50 hover:shadow-md transition-all cursor-pointer group"
+    },
+    "status_badge": {
+      "base": "inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium border"
+    }
+  },
+  "image_urls": {
+    "login_background": {
+      "url": "https://images.unsplash.com/photo-1612277107663-a65c0f67be64?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NDQ2Mzl8MHwxfHNlYXJjaHwxfHxtb2Rlcm4lMjB1bml2ZXJzaXR5JTIwY2FtcHVzJTIwYXJjaGl0ZWN0dXJlfGVufDB8fHx3aGl0ZXwxNzY2NDIxODEyfDA&ixlib=rb-4.1.0&q=85",
+      "alt": "Modern university campus atrium with students working",
+      "usage": "Right side of login page, full height, object-cover"
+    },
+    "empty_state": {
+      "url": "https://images.pexels.com/photos/18069239/pexels-photo-18069239.png",
+      "alt": "Abstract minimalist 3D shape",
+      "usage": "Center of dashboard when no issues are reported"
+    }
+  },
+  "instructions_to_main_agent": [
+    "1. THEME: Implement the 'Smart Campus Indigo' theme. Use the specific Tailwind classes provided in 'colors'.",
+    "2. LAYOUT: Use the 'Control Room' grid for the dashboard. Don't just stack divs. Use the grid-cols-12 system.",
+    "3. COMPONENTS: Use the provided Shadcn components in /components/ui. Customize them with the classes in 'components' section.",
+    "4. MOCK AUTH: Create a simple login form. Any email/password combination should redirect to the dashboard. Store a dummy 'user' object in localStorage or Context.",
+    "5. REPORT FORM: Make it a 'Wizard' or a clean single-page form. Use the 'Glassmorphism' style for the container.",
+    "6. ADMIN TOGGLE: Place this prominently (e.g., top right). It should instantly switch the view state and reveal the 'Admin Stats' bento grid.",
+    "7. IMAGES: Use the provided URLs. Do not use placeholders.",
+    "8. DATA-TESTID: Add data-testid attributes to all interactive elements (buttons, inputs, toggles) as per the rules."
+  ],
+  "UNIVERSAL_GUIDELINES_FOR_MAIN_AGENT": [
+    "Avoid 'AI Slop': Do not use generic gradients or centered layouts everywhere.",
+    "Spacing: Use p-6 or p-8 for cards. Give content room to breathe.",
+    "Micro-interactions: Add hover:scale-[1.02] to cards and active:scale-95 to buttons.",
+    "Dark Mode: Ensure all text has sufficient contrast in dark mode. Use slate-400 for muted text, not slate-600.",
+    "No 'Transparent' Backgrounds: Always use a blur or a solid color for dropdowns and headers."
+  ]
+}
