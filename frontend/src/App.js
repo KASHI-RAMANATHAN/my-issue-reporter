@@ -27,6 +27,8 @@ import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
 const API = `${BACKEND_URL}/api`;
+console.log("BACKEND_URL =", BACKEND_URL);
+console.log("API =", API);
 
 // Auth Context
 const AuthContext = createContext(null);
@@ -335,101 +337,88 @@ const Dashboard = () => {
 
   // Submit report
   const handleSubmitReport = async (e) => {
-    e.preventDefault();
-    if (!building || !description) {
-      toast.error("Please fill in all required fields");
-      return;
+  e.preventDefault();
+
+  if (!building || !description) {
+    toast.error("Please fill in all required fields");
+    return;
+  }
+
+  setSubmitting(true);
+
+  try {
+    let imageBase64 = null;
+
+    // Convert image to base64 if present
+    if (imageFile) {
+      imageBase64 = await new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onloadend = () => {
+          if (!reader.result) return resolve(null);
+          resolve(reader.result.split(",")[1]); // strip data:image/...;base64,
+        };
+        reader.onerror = () => reject("Image read failed");
+        reader.readAsDataURL(imageFile);
+      });
     }
 
-    setSubmitting(true);
-    try {
-      let imageUrl = null;
-      let imageBase64 = null;
+    // Call backend
+    await axios.post(
+      `${API}/issues`,
+      {
+        building,
+        description,
+        image_base64: imageBase64,
+        image_url: null,
+      },
+      { timeout: 10000 }
+    );
 
-      // Upload image to Firebase Storage if present
-      if (imageFile) {
-        const resizedBlob = await resizeImage(imageFile);
-        const fileName = `issues/${Date.now()}_${imageFile.name}`;
-        const storageRef = ref(storage, fileName);
-        
-        try {
-          await uploadBytes(storageRef, resizedBlob);
-          imageUrl = await getDownloadURL(storageRef);
-        } catch (storageError) {
-          console.error("Storage upload error:", storageError);
-          // Convert to base64 for API fallback
-          const reader = new FileReader();
-          imageBase64 = await new Promise((resolve) => {
-            reader.onloadend = () => {
-              const base64 = reader.result.split(",")[1];
-              resolve(base64);
-            };
-            reader.readAsDataURL(resizedBlob);
-          });
-        }
-      }
+    toast.success("Issue reported successfully!");
 
-      // First call backend API for AI analysis and MongoDB storage
-      const apiResponse = await axios.post(
-        `${API}/issues`,
-        {
-          building,
-          description,
-          image_url: imageUrl,
-          image_base64: imageBase64,
-        },
-        { timeout: 10000 }
-      );
+    // Reset form
+    setBuilding("");
+    setDescription("");
+    clearImage();
 
-      // Also store in Firestore
-      try {
-        await addDoc(collection(db, "issues"), {
-          ...apiResponse.data,
-          created_at: new Date().toISOString()
-        });
-      } catch (firestoreError) {
-        console.error("Firestore write error:", firestoreError);
-      }
+    // Refresh issues
+    fetchIssues();
 
-      toast.success("Issue reported successfully!");
-      
-      // Reset form
-      setBuilding("");
-      setDescription("");
-      clearImage();
-      
-      // Refresh issues
-      fetchIssues();
-      
-    } catch (error) {
-      console.error("Submit error:", error);
-      toast.error("Failed to submit report. Please try again.");
-    }
-    setSubmitting(false);
-  };
+  } catch (error) {
+    console.error("Submit error:", error);
+    toast.error("Failed to submit report. Please try again.");
+  }
 
-  // Update issue status (admin only)
-  const updateIssueStatus = async (issueId, newStatus) => {
-    try {
-      // Update in API
-      await axios.patch(`${API}/issues/${issueId}`, { status: newStatus });
-      
-      // Update in Firestore
-      try {
-        const issueRef = doc(db, "issues", issueId);
-        await updateDoc(issueRef, { status: newStatus });
-      } catch (firestoreError) {
-        console.error("Firestore update error:", firestoreError);
-      }
+  setSubmitting(false);
+};
 
-      toast.success(`Status updated to ${newStatus}`);
-      fetchIssues();
-      fetchStats();
-    } catch (error) {
-      console.error("Update error:", error);
-      toast.error("Failed to update status");
-    }
-  };
+
+const updateIssueStatus = async (issueId, newStatus) => {
+  // 1. Optimistically update UI immediately
+  setIssues((prev) =>
+    prev.map((issue) =>
+      issue.id === issueId
+        ? { ...issue, status: newStatus }
+        : issue
+    )
+  );
+
+  try {
+    // 2. Persist to backend
+    await axios.patch(`${API}/issues/${issueId}`, { status: newStatus });
+
+    toast.success(`Status updated to ${newStatus}`);
+
+    // 3. Background sync (optional but safe)
+    fetchIssues();
+    fetchStats();
+  } catch (error) {
+    toast.error("Failed to update status");
+
+    // 4. Rollback if backend fails
+    fetchIssues();
+  }
+};
 
   const handleLogout = () => {
     logout();
@@ -774,6 +763,15 @@ const Dashboard = () => {
                                   {issue.description}
                                 </p>
                                 <div className="flex flex-wrap items-center gap-2">
+                                  {isAdmin && issue.is_spam && (
+                                    <Badge
+                                      variant="outline"
+                                      className="badge text-rose-600 bg-rose-50 dark:text-rose-400 dark:bg-rose-950/30 border-rose-200 dark:border-rose-800"
+                                      title={issue.spam_reason || "Flagged as potential spam"}
+                                    >
+                                      ⚠️ Flagged
+                                    </Badge>
+                                  )}
                                   <Badge 
                                     variant="outline" 
                                     className={`badge ${getStatusClass(issue.status)}`}
@@ -790,13 +788,18 @@ const Dashboard = () => {
                                 </div>
                               </div>
                               
-                              {issue.image_url && (
+                              {(issue.image_url || issue.image_base64) && (
                                 <img
-                                  src={issue.image_url}
+                                  src={
+                                    issue.image_url
+                                      ? issue.image_url
+                                      : `data:image/jpeg;base64,${issue.image_base64}`
+                                  }
                                   alt="Issue"
-                                  className="w-20 h-20 rounded-lg object-cover flex-shrink-0"
+                                  className="w-20 h-20 rounded-lg object-cover"
                                 />
                               )}
+
                             </div>
 
                             {/* Admin Actions */}
